@@ -43,9 +43,11 @@ namespace ExcelConvert
 
         public static async Task Search(List<string> itemFirst, List<List<string>> listSecond)
         {
+            var a = itemFirst[2].Split('.');
             foreach (var itemSecond in listSecond)
             {
-                if (itemFirst[0] == itemSecond[0] && itemFirst[2] == itemSecond[2])
+                var b = itemSecond[2].Split('.');
+                if (itemFirst[0] == itemSecond[0] && a[0] == b[0] && a[1] == b[1])
                 {
                     listSecond.Remove(itemSecond);
                     break;
