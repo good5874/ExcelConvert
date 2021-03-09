@@ -20,16 +20,22 @@ namespace ExcelConvert
             List<List<string>> listFirs = await FilOpen("file1.xlsx");
             List<List<string>> listSecond = await FilOpen("file2.xlsx");
 
+            var listResult = new List<List<string>>();
+
             foreach (var itemFirst in listFirs)
             {
-                await Search(itemFirst, listSecond);
+               var a = await Search(itemFirst, listSecond);
+                if(a!=null)
+                {
+                    listResult.Add(a);
+                }
             }
 
             using (var workbook = new XLWorkbook())
             {
                 var worksheet = workbook.Worksheets.Add("list1");
                 var currentRow = 0;
-                foreach (var item in listSecond)
+                foreach (var item in listResult)
                 {
                     currentRow++;
                     for (int i = 0; i < item.Count; i++)
@@ -41,7 +47,7 @@ namespace ExcelConvert
             }
         }
 
-        public static async Task Search(List<string> itemFirst, List<List<string>> listSecond)
+        public static async Task<List<string>> Search(List<string> itemFirst, List<List<string>> listSecond)
         {
             var a = itemFirst[2].Split('.');
             foreach (var itemSecond in listSecond)
@@ -49,10 +55,10 @@ namespace ExcelConvert
                 var b = itemSecond[2].Split('.');
                 if (itemFirst[0] == itemSecond[0] && a[0] == b[0] && a[1] == b[1])
                 {
-                    listSecond.Remove(itemSecond);
-                    break;
+                    return itemSecond;
                 }
             }
+            return null;
         }
 
 
